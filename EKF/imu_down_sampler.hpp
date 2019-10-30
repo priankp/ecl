@@ -47,18 +47,18 @@ using namespace estimator;
 class ImuDownSampler
 {
 public:
-	ImuDownSampler(float target_dt_sec);
-	~ImuDownSampler();
+	explicit ImuDownSampler(float target_dt_sec);
+	~ImuDownSampler() = default;
 
-	bool update(imuSample imu_sample_new);
+	bool update(const imuSample &imu_sample_new);
 	imuSample getDownSampledImuAndTriggerReset();
 
 private:
-	imuSample _imu_down_sampled;
-	Quatf _delta_angle_accumulated;
+	imuSample _imu_down_sampled{};
+	Quatf _delta_angle_accumulated{};
 	const float _target_dt; // [sec]
-	float _imu_collection_time_adj;
-	bool _do_reset;
+	float _imu_collection_time_adj{0.f};
+	bool _do_reset{true};
 
 	void reset();
 

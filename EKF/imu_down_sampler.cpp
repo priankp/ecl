@@ -1,29 +1,25 @@
 #include "imu_down_sampler.hpp"
 
 ImuDownSampler::ImuDownSampler(float target_dt_sec):
-_target_dt{target_dt_sec},
-_imu_collection_time_adj{0.0f}
+	_target_dt{target_dt_sec}
 {
 	reset();
-	_imu_down_sampled.time_us = 0.0f;
-}
-
-ImuDownSampler::~ImuDownSampler()
-{
 }
 
 // integrate imu samples until target dt reached
 // assumes that dt of the gyroscope is close to the dt of the accelerometer
 // returns true if target dt is reached
-bool ImuDownSampler::update(imuSample imu_sample_new)
+bool ImuDownSampler::update(const imuSample &imu_sample_new)
 {
-	if(_do_reset)
-	{
+	if (_do_reset) {
 		reset();
 	}
+
 	// accumulate time deltas
 	_imu_down_sampled.delta_ang_dt += imu_sample_new.delta_ang_dt;
 	_imu_down_sampled.delta_vel_dt += imu_sample_new.delta_vel_dt;
+	_imu_down_sampled.delta_vel_samples += imu_sample_new.delta_vel_samples;
+	_imu_down_sampled.delta_vel_clip_count += imu_sample_new.delta_vel_clip_count;
 	_imu_down_sampled.time_us = imu_sample_new.time_us;
 
 	// use a quaternion to accumulate delta angle data
@@ -69,6 +65,8 @@ void ImuDownSampler::reset()
 	_imu_down_sampled.delta_vel.setZero();
 	_imu_down_sampled.delta_ang_dt = 0.0f;
 	_imu_down_sampled.delta_vel_dt = 0.0f;
+	_imu_down_sampled.delta_vel_samples = 0;
+	_imu_down_sampled.delta_vel_clip_count = 0;
 	_delta_angle_accumulated.setIdentity();
 	_do_reset = false;
 }
