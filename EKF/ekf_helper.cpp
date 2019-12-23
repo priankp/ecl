@@ -564,7 +564,6 @@ bool Ekf::resetMagHeading(const Vector3f &mag_init, bool increase_yaw_var, bool 
 	}
 
 	if (_params.mag_fusion_type >= MAG_FUSE_TYPE_NONE) {
-		stopMagFusion();
 		return false;
 	}
 
