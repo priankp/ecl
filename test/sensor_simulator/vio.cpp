@@ -23,9 +23,9 @@ void Vio::setData(const ext_vision_message& vio_data)
 	_vio_data = vio_data;
 }
 
-void Vio::setVelocityVariance(const Vector3f& velVar)
+void Vio::setVelocityCovariance(const Matrix3f& velCov)
 {
-	_vio_data.velVar = velVar;
+	_vio_data.velCov = velCov;
 }
 
 void Vio::setPositionVariance(const Vector3f& posVar)
@@ -53,6 +53,17 @@ void Vio::setOrientation(const Quatf& quat)
 	_vio_data.quat = quat;
 }
 
+void Vio::setVelocityFrameToBody()
+{
+	_vio_data.vel_frame = BODY_FRAME_FRD;
+}
+
+void Vio::setVelocityFrameToLocal()
+{
+	_vio_data.vel_frame = LOCAL_FRAME_FRD;
+}
+
+
 ext_vision_message Vio::dataAtRest()
 {
 	ext_vision_message vio_data;
@@ -60,8 +71,9 @@ ext_vision_message Vio::dataAtRest()
 	vio_data.vel = Vector3f{0.0f, 0.0f, 0.0f};;
 	vio_data.quat = Quatf{1.0f, 0.0f, 0.0f, 0.0f};
 	vio_data.posVar = Vector3f{0.1f, 0.1f, 0.1f};
-	vio_data.velVar = Vector3f{0.1f, 0.1f, 0.1f};
+	vio_data.velCov = matrix::eye<float ,3>() * 0.1f;
 	vio_data.angVar = 0.05f;
+	vio_data.vel_frame = LOCAL_FRAME_FRD;
 	return vio_data;
 }
 

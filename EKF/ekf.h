@@ -625,6 +625,10 @@ private:
 	// and reset the rotation matrix which transforms EV navigation frame measurements into NED
 	void resetExtVisRotMat();
 
+	Vector3f getVisionVelocityInEkfFrame();
+
+	Vector3f getVisionVelocityVarianceInEkfFrame();
+
 	// limit the diagonal of the covariance matrix
 	// force symmetry when the argument is true
 	void fixCovarianceErrors(bool force_symmetry);

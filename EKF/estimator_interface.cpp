@@ -415,10 +415,11 @@ void EstimatorInterface::setExtVisionData(uint64_t time_usec, ext_vision_message
 
 		ev_sample_new.angVar = evdata->angVar;
 		ev_sample_new.posVar = evdata->posVar;
-		ev_sample_new.velVar = evdata->velVar;
+		ev_sample_new.velCov = evdata->velCov;
 		ev_sample_new.quat = evdata->quat;
 		ev_sample_new.pos = evdata->pos;
 		ev_sample_new.vel = evdata->vel;
+		ev_sample_new.vel_frame = evdata->vel_frame;
 
 		_time_last_ext_vision = time_usec;
 
